@@ -1,7 +1,7 @@
 import "./NavTab.css";
 
 const NavTab = () => {
-  return(
+  return (
     <section className="navTab">
       <div className="navTab__item">О проекте</div>
       <div className="navTab__item">Технологии</div>

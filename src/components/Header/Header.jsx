@@ -2,7 +2,7 @@ import "./Header.css";
 import logo from "../../images/logo.png";
 
 const Header = () => {
-  return(
+  return (
     <section className="header">
       <a className="link header__link_type_logo>" href="#">
         <img src={logo} className="header__logo" alt='логотип' />
