@@ -1,0 +1,90 @@
+.profileHeader {
+  height: 74px;
+  padding: 0 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+  
+.profileHeader__navigation {
+  display: flex;
+  gap: 17px;
+  width: 100px;
+}
+
+.profileHeader__movieslist {
+  display: flex;
+  width: 212px;
+  height: 18px;
+  gap: 15px;
+  flex-wrap: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+.profileHeader__movielink {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.profileHeader__chelbox {
+  width: 26px;
+  height: 30px;
+  background-color: #F9F9F9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.profileHeader__chel {
+  width: 12px;
+  height: 14px;
+}
+
+.profileHeader__link {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+}
+  
+.profileHeader__link_type_signin {
+  background-color: #2be080;
+  border-radius: 3px;
+  padding: 8px 20px;
+}
+
+.profileHeader__link_type_logo {
+  width: 38px;
+  height: 38px;
+}
+
+@media screen and (max-width: 790px) {
+  .profileHeader {
+    padding: 0 30px;
+  }
+}
+  
+@media screen and (max-width: 450px) {
+  .profileHeader {
+    padding: 0 14px;
+  }
+  
+  .profileHeader__navigation {
+    gap: 26px;
+  }
+  
+  .profileHeader__link {
+    font-size: 10px;
+  }
+  
+  .profileHeader__link_type_signin {
+    padding: 5px 12px;
+  }
+}

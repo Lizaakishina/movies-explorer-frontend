@@ -12,9 +12,17 @@ body {
 .link {
   color: #000;
   text-decoration: none;
+  margin: 0;
 }
 
 .list {
   padding: 0;
   list-style-type: none;
+}
+
+.button {
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-color: #00000000;
 }
