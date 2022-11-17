@@ -10,7 +10,7 @@ import Footer from '../Footer/Footer';
 const Main = () => {
   return (
     <main className="main__page">
-      <Header />
+      <Header loggedIn={false}/>
       <Promo />
       <AboutProject />
       <Techs />

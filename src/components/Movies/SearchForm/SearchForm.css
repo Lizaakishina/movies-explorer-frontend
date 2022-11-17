@@ -50,6 +50,11 @@
   background-color: #f9f9f9;
   margin-left: 10px;
   font-size: 18px;
+  outline: none;
+}
+
+.searchForm__input:focus {
+  border-bottom: 1px solid #2be080;
 }
 
 .searchForm__input::placeholder {
