@@ -84,7 +84,7 @@
 
 @media screen and (max-width: 790px) {
   .searchForm {
-    padding: 80px 30px 110px;
+    padding: 80px 30px 0px;
   }
 
   .searchForm::after {
@@ -101,7 +101,12 @@
   .searchForm {
     padding: 80px 10px 45px;
     flex-direction: column;
-    gap: 46px;
+    gap: 30px;
+  }
+
+  .searchForm__set {
+    padding: 20px 0px 20px 12px;
+    width: calc(100% - 80px);
   }
 
   .searchForm::after {
@@ -111,6 +116,8 @@
 
   .searchForm__form {
     border-radius: 9px;
+    width: 100%;
+    height: 56px;
   }
 
   .searchForm__img {
@@ -119,7 +126,9 @@
   }
 
   .searchForm__input {
-    margin-left: 0;
+    margin: 0;
+    max-width: 100px;
+    padding: 0;
   }
 
   .searchForm__input::placeholder {
@@ -127,7 +136,10 @@
   }
 
   .button_type_search {
-    margin-right: 19px;
+    margin-right: 6px;
+    width: 80px;
+    height: 44px;
+    font-size: 14px;
   }
 
   .searchForm__line {

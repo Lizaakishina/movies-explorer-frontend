@@ -1,4 +1,5 @@
-import Header from "../Header/Header";
+import Header from "../ProfileHeader/ProfileHeader";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import "./Movies.css";
 import SearchForm from "./SearchForm/SearchForm";
@@ -8,6 +9,7 @@ const Movies = () => {
     <section className="movies">
       <Header />
       <SearchForm />
+      <MoviesCardList type="movies"/>
       <Footer />
     </section>
   )
