@@ -8,7 +8,7 @@
   
 .header__navigation {
   display: flex;
-  gap: 30px;
+  gap: 17px;
 }
   
 .header__link {
@@ -30,9 +30,69 @@
   height: 38px;
 }
 
+.header__link_type_acc {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.header__navigation_type_movies {
+  width: 100%;
+  margin-left: 426px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__flex {
+  display: flex;
+  gap: 16px;
+}
+
+.header__navLink {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.header__navLink_active {
+  font-weight: 500;
+}
+
+.header__chelbox {
+  width: 26px;
+  height: 30px;
+  background-color: #F9F9F9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.header__chel {
+  width: 12px;
+  height: 14px;
+}
+
+.header__navLink_type_profile {
+  width: 100px;
+  background: #f9f9f9;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  padding: 8px 0;
+}
+
 @media screen and (max-width: 790px) {
   .header {
     padding: 0 30px;
+  }
+  
+  .header__navigation_type_movies {
+    display: none;
   }
 }
   

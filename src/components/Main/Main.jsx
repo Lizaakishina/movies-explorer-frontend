@@ -1,4 +1,3 @@
-import './Main.css';
 import Header from '../Header/Header';
 import Promo from './Promo/Promo';
 import AboutProject from './AboutProject/AboutProject';
@@ -9,15 +8,17 @@ import Footer from '../Footer/Footer';
 
 const Main = () => {
   return (
-    <main className="main__page">
+    <>
       <Header loggedIn={false}/>
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
+      <main>
+        <Promo />
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio />
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }
 

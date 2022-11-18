@@ -18,7 +18,7 @@ const AboutMe = () => {
               начала заниматься фриланс&#8209;заказами.
             </p>
           </div>
-          <a className="aboutMe__link" href="https://github.com/Lizaakishina" target="_blank">Github</a>
+          <a className="link aboutMe__link" href="https://github.com/Lizaakishina" target="blank">Github</a>
         </li>
         <li className="aboutMe__item">
           <div className="aboutMe__image"></div>

@@ -10,32 +10,30 @@ import { Switch, Route } from 'react-router-dom';
 
 const App = () => {
   return (
-    <div className='app'>
-      <Switch>
-        <Route exact path="/">
-          <Main />
-        </Route>
-        <Route path="/movies">
-          <Movies />
-        </Route>
-        <Route path="/saved-movies">
-          <SavedMovies />
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/signup">
-          <Register />
-        </Route>
-        <Route path="/signin">
-          <Login />
-        </Route>
-        <Route path="*">
-          <PageNotFound />
-        </Route>
-      </Switch>
-    </div>
-  );
+    <Switch>
+      <Route exact path="/">
+        <Main />
+      </Route>
+      <Route path="/movies">
+        <Movies />
+      </Route>
+      <Route path="/saved-movies">
+        <SavedMovies />
+      </Route>
+      <Route path="/profile">
+        <Profile />
+      </Route>
+      <Route path="/signup">
+        <Register />
+      </Route>
+      <Route path="/signin">
+        <Login />
+      </Route>
+      <Route path="*">
+        <PageNotFound />
+      </Route>
+    </Switch>
+  )
 }
 
 export default App;

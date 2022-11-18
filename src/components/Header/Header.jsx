@@ -1,17 +1,37 @@
 import "./Header.css";
-import logo from "../../images/logo.png";
+import {Link, NavLink} from "react-router-dom";
+import logo from "../../images/logo.svg";
+import chel from "../../images/chel.svg";
+import PopupMenu from "./PopupMenu/PopupMenu";
 
-const Header = () => {
+const Header = ({loggedIn}) => {
   return (
-    <section className="header">
-      <a className="link header__link_type_logo>" href="#">
+    <header className="header">
+      <Link to="/" className="link header__link_type_logo>">
         <img src={logo} className="header__logo" alt='логотип' />
-      </a>
-      <div className="header__navigation">
-        <a className="link header__link" href="#">Регистрация</a>
-        <a className="link header__link header__link_type_signin" href="#">Войти</a>
-      </div>
-    </section>
+      </Link>
+      {loggedIn? 
+        <>
+          <div className="header__navigation header__navigation_type_movies">
+            <div className="header__flex">
+              <NavLink to="/movies" className="link header__navLink" activeClassName="header__navLink_active">Фильмы</NavLink>
+              <NavLink to="/saved-movies" className="link header__navLink" activeClassName="header__navLink_active">Сохранённые фильмы</NavLink>
+            </div>
+            <div className="header__navigation">
+              <NavLink to="/profile" className="link header__link_type_acc">Аккаунт</NavLink>
+              <div className="header__chelbox">
+                <img src={chel} className="header__chel" alt='человечек' />
+              </div>
+            </div>
+          </div> 
+          <PopupMenu />
+        </>
+      : <div className="header__navigation">
+          <Link to="/signup" className="link header__link">Регистрация</Link>
+          <Link to="/signin" className="link header__link header__link_type_signin">Войти</Link>
+        </div>
+      }
+    </header>
   )
 }
 
