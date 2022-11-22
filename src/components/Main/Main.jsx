@@ -1,5 +1,6 @@
 import Header from '../Header/Header';
 import Promo from './Promo/Promo';
+import AboutProject from './AboutProject/AboutProject';
 
 const Main = () => {
     return (
@@ -7,6 +8,7 @@ const Main = () => {
         <Header logIn={false}/>
         <main>
           <Promo />
+          <AboutProject />
         </main>
       </>
     )
