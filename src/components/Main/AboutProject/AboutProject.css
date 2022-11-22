@@ -28,7 +28,44 @@
   font-weight: 400;
   margin: 26px 0 0 0;
 }
+
+.aboutProject__scale {
+  font-size: 14px;
+  line-height: 17px;
+  margin-top: 110px;
+  display: flex;
+  text-align: center;
+}
   
+.aboutProject__backend {
+  font-weight: 400;
+  max-width: 228px;
+  width: 100%;
+  flex-shrink: 3.771;
+}
+  
+.aboutProject__scale-backend {
+  padding: 9px 0;
+  background-color: #2be080;
+}
+  
+.aboutProject__scale-description {
+  color: #a0a0a0;
+  margin-top: 14px;
+}
+  
+.aboutProject__frontend {
+  font-weight: 400;
+  max-width: 912px;
+  width: 100%;
+  flex-shrink: 1;
+}
+  
+.aboutProject__scale-frontend {
+  padding: 9px 0;
+  background-color: #f2f2f2;
+}
+
 @media screen and (max-width: 780px) {
   .aboutProject {
     padding: 90px 50px;
@@ -46,6 +83,14 @@
     font-size: 12px;
     line-height: 18px;
     margin: 22px 0 0 0;
+  }
+
+  .aboutProject__scale {
+    margin-top: 93px;
+  }
+  
+  .aboutProject__scale-backend {
+    min-width: 100px;
   }
 }
   
@@ -69,5 +114,24 @@
     font-size: 11px;
     line-height: 16px;
     margin: 16px 0 0 0;
+  }
+
+  .aboutProject__scale {
+    font-size: 11px;
+    line-height: 13.31px;
+    margin-top: 60px;
+    text-align: center;
+  }
+  
+  .aboutProject__scale-backend {
+    padding: 11px 0;
+  }
+  
+  .aboutProject__scale-description {
+    margin-top: 10px;
+  }
+
+  .aboutProject__scale-frontend {
+    padding: 11px 0;
   }
 }

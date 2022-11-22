@@ -15,6 +15,16 @@ const AboutProject = () => {
           <p className="aboutProject__description">У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.</p>
         </li>
       </ul>
+      <ul className="list aboutProject__scale">
+        <li className="aboutProject__backend">
+          <div className="aboutProject__scale-backend">1 неделя</div>
+          <p className="aboutProject__scale-description">Back-end</p>
+        </li>
+        <li className="aboutProject__frontend">
+          <div className="aboutProject__scale-frontend">4 недели</div>
+          <p className="aboutProject__scale-description">Front-end</p>
+        </li>
+      </ul>
     </section>
   )
 }
