@@ -12,6 +12,7 @@ const MoviesList = () => {
         <li><MovieCard/></li>
         <li><MovieCard/></li>
         <li><MovieCard/></li>
+        <li><MovieCard/></li>
       </ul>
       <button type="button" className="button moviesList__button">Ещё</button>
     </section>

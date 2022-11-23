@@ -85,7 +85,7 @@
 
 @media screen and (max-width: 480px) {
   .searchForm {
-    padding: 80px 10px 45px;
+    padding: 80px 14px 10px;
     flex-direction: column;
     gap: 30px;
   }

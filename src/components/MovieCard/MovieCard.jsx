@@ -10,7 +10,7 @@ const MovieCard = () => {
           <h3 className="movieCard__name">33 слова о дизайне</h3>
           <p className="movieCard__time">1ч 47м</p>
         </div>
-        <button type="button" className="button movieCard__button">
+        <button type="button" className="button">
           <img className="movieCard__save" src={save_active} alt="В избранное"/>
         </button>
       </div>
