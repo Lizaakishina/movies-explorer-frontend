@@ -2,6 +2,7 @@ import "./Header.css";
 import {Link, NavLink} from "react-router-dom";
 import logo from "../../images/logo.svg";
 import chel from "../../images/chel.svg";
+import PopupMenu from "./PopupMenu/PopupMenu";
 
 const Header = ({logIn}) => {
   return (
@@ -22,6 +23,7 @@ const Header = ({logIn}) => {
               </div>
             </div>
           </div> 
+          <PopupMenu />
         </>
        :<div className="header__nav">
           <Link to="/signup" className="link header__link">Регистрация</Link>
