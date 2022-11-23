@@ -21,6 +21,8 @@ const Profile = () => {
               <p className="profile__data">{email}</p>
             </div>
           </div>
+          <button type="button" className="button profile__edit">Редактировать</button>
+          <button type="button" className="button profile__exit">Выйти из аккаунта</button>
         </section>
       </main>
     </>

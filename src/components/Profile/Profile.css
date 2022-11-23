@@ -40,6 +40,21 @@
   border-bottom: 1px solid #e8e8e8;
 }
 
+.profile__edit {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  margin: 220px 0 0 0;
+}
+
+.profile__exit {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #ee3465;
+  margin: 16px 0 0 0;
+}
+
 @media screen and (max-width: 780px) {
   .profile {
     padding: 236px 0 269px;
@@ -47,6 +62,10 @@
 
   .profile__hello {
     margin: 0 0 96px 0;
+  }
+
+  .profile__edit {
+    margin: 210px 0 0 0;
   }
 }
 
@@ -61,5 +80,16 @@
 
   .profile__container {
     width: 260px;
+  }
+
+  .profile__edit {
+    font-size: 12px;
+    line-height: 15px;
+    margin: 379px 0 0 0;
+  }
+
+  .profile__exit {
+    font-size: 12px;
+    line-height: 15px;
   }
 }
