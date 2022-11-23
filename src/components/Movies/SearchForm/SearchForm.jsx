@@ -1,4 +1,5 @@
 import "./SearchForm.css";
+import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
 
 const SearchForm = () => {
   return (
@@ -11,6 +12,7 @@ const SearchForm = () => {
         </fieldset>
         <button className="button button_type_search">Поиск</button>
       </form>
+      <FilterCheckbox />
       <div className="searchForm__line"></div>
     </div>
   )
