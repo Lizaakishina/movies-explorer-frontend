@@ -1,8 +1,13 @@
 import "./MovieCard.css";
 import save_active from "../../images/save_active.svg";
 import movie from "../../images/movie.svg";
+import close from "../../images/close.svg";
+import save_disactive from "../../images/save_disactive.svg";
 
-const MovieCard = () => {
+const MovieCard = ({type}) => {
+  const isSaved = true;
+  const moviesCardSaved = isSaved ? save_active : save_disactive;
+  const moviesCardClose = type==="movies" ? moviesCardSaved : close;
   return (
     <div className="movieCard">
       <div className="movieCard__flexbox">
@@ -11,7 +16,7 @@ const MovieCard = () => {
           <p className="movieCard__time">1ч 47м</p>
         </div>
         <button type="button" className="button">
-          <img className="movieCard__save" src={save_active} alt="В избранное"/>
+          <img className="movieCard__save" src={moviesCardClose} alt="В избранное"/>
         </button>
       </div>
       <img className="movieCard__shot" src={movie} alt="Кадр из фильма"/>
