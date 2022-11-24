@@ -97,7 +97,7 @@
   height: 14px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 780px) {
   .popupMenu__container {
     display: flex;
   }
