@@ -35,6 +35,29 @@
   color: #3456F3;
 }
 
+.register__form {
+  width: 100%;
+  margin: 40px 0 0 0;
+}
+
+.form__button {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  width: 100%;
+  margin: 126px 0 0 0;
+  padding: 13px 0 15px;
+  background-color: #3456F3;
+  border-radius: 3px;
+}
+
+.form__button_inactive {
+  color: #000;
+  cursor: auto;
+  background-color: #f8f8f8;
+}
+
 @media screen and (max-width: 480px) {
   .register {
     max-width: 260px;
@@ -55,5 +78,17 @@
     font-size: 12px;
     line-height: 15px;
     margin: 14px 0 0 0;
+  }
+
+  .register__form {
+    margin: 80px 0 0 0;
+  }
+
+  .form__button {
+    font-size: 12px;
+    line-height: 15px;
+    width: 100%;
+    margin: 210px 0 0 0;
+    padding: 15px 0;
   }
 }
