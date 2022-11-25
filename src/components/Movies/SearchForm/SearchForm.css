@@ -1,0 +1,119 @@
+.searchForm {
+  padding: 70px 70px 10px 70px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  position: relative;
+}
+
+.searchForm__form {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid rgba(170, 170, 170, .2);
+  border-radius: 8px;
+  border-top-left-radius: 9px;
+  border-bottom-left-radius: 9px;
+  background-color: #ffffff;
+}
+
+.searchForm__fieldset {
+  width: calc(100% - 150px);
+  padding: 19px;
+  margin: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+.searchForm__label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.searchForm__input {
+  font-size: 18px;
+  line-height: 20px;
+  width: 100%;
+  margin: 0 0 0 10px;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+.searchForm__input:focus {
+  border-bottom: 1px solid #2be080;
+}
+
+.searchForm__input::placeholder {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #a0a0a0;
+}
+
+.button_type_search {
+  font-size: 14px;
+  color: #fff;
+  width: 100px;
+  height: 52px;
+  margin: 0 10px 0 0;
+  display: grid;
+  align-items: center;
+  border-radius: 5px;
+  background-color:#3456F3 ;
+}
+
+.searchForm__line {
+  width: 100%;
+  margin: 43px 0 0 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+@media screen and (max-width: 780px) {
+  .searchForm {
+    padding: 80px 30px 0px;
+  }
+
+  .searchForm__line {
+    margin: 51px 0 0 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .searchForm {
+    padding: 80px 14px 10px;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .searchForm__fieldset {
+    width: calc(100% - 100px);
+    padding: 20px 0px 20px 12px;
+  }
+
+  .searchForm__form {
+    width: 100%;
+    height: 56px;
+    border-radius: 9px;
+  }
+
+  .searchForm__input::placeholder {
+    font-size: 14px;
+  }
+
+  .button_type_search {
+    font-size: 14px;
+    width: 80px;
+    height: 44px;
+    margin: 0 6px 0 0;
+  }
+
+  .searchForm__line {
+    border-right: none;
+    margin: 33px 0 0 0;
+  }
+}

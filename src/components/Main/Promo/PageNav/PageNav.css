@@ -1,0 +1,30 @@
+.pageNav {
+  padding-bottom: 30px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+  
+.pageNav__item {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+  color: white;
+  max-width: 96px;
+  width: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+  background-color: #e8e8e8;
+  border-radius: 10px;
+  text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+  .pageNav__item {
+    font-size: 10px;
+    max-width: 82px;
+    padding: 5px 0;
+    border-radius: 6px;
+  }
+}
