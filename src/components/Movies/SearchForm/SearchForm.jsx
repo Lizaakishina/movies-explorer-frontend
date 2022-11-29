@@ -18,7 +18,7 @@ const SearchForm = ({type, onSearch, onError}) => {
     <div className="searchForm">
       <form className="searchForm__form" name="searchForm" onSubmit={handleSearchMovie} noValidate>
         <fieldset className="searchForm__fieldset">
-          <label htmlfor="search" className="searchForm__label">
+          <label htmlFor="search" className="searchForm__label">
           <input 
               type="text"
               className="searchForm__input"
