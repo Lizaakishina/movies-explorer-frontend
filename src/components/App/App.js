@@ -8,9 +8,11 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import { Switch, Route } from 'react-router-dom';
 import PopupWithError from '../ErrorPopup/ErrorPopup';
 import useOpenPopup from '../../hook/useOpenMenu';
+import useGetMovie from '../../hook/useGetMovie';
 
 const App = () => {
   const {handleOpenPopup, handleClosePopup, handleCLoseOverlay, isOpen, errorMessage} = useOpenPopup();
+  const {handleSearchMovie, isLoader, movies, movieErrorMessage} = useGetMovie();
     return (
       <>
         <Switch>
@@ -18,7 +20,7 @@ const App = () => {
             <Main />
           </Route>
           <Route path="/movies">
-            <Movies />
+            <Movies onSearch={handleSearchMovie} isLoader={isLoader} movies={movies} onError={handleOpenPopup} movieErrorMessage={movieErrorMessage}/>
           </Route>
           <Route path="/saved-movies">
             <SavedMovies />
