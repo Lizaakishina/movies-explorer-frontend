@@ -14,7 +14,7 @@ const useGetMovie = () => {
 
       e.preventDefault();
       const moviesApi = await getMovies();
-      const list = moviesApi.filter(movie => movie.nameRus.toLowerCase().includes(movieName.toLowerCase())
+      const list = moviesApi.filter(movie => movie.nameRU.toLowerCase().includes(movieName.toLowerCase())
                                     || movie.nameEN.toLowerCase().includes(movieName.toLowerCase()))
       list.length === 0 ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
       setMovies(list);
