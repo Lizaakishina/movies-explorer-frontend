@@ -4,7 +4,7 @@ import close from "../../images/close.svg";
 import save_disactive from "../../images/save_disactive.svg";
 import { useLocation } from "react-router";
 
-const MovieCard = ({nameRus, image, time}) => {
+const MovieCard = ({nameRus, image, time, trailer}) => {
   const url = useLocation();
   const isSaved = true;
   const moviesCardSaved = isSaved ? save_active : save_disactive;
@@ -23,7 +23,9 @@ const MovieCard = ({nameRus, image, time}) => {
           <img className="movieCard__save" src={moviesCardClose} alt="В избранное"/>
         </button>
       </div>
-      <img className="movieCard__shot" src={`https://api.nomoreparties.co${image}`} alt="Кадр из фильма"/>
+      <a className="link" href={trailer} target="blank">
+        <img className="movieCard__shot" src={`https://api.nomoreparties.co${image}`} alt="Кадр из фильма" />
+      </a>
     </div>
   )
 }

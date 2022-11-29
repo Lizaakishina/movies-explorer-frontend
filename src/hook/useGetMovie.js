@@ -9,7 +9,6 @@ const useGetMovie = () => {
 
   const handleSearchMovie = async (e, movieName) => {
     try {
-      setMovies([])
       setMovieErrorMessage('')
       setIsLoader(true);
 
@@ -18,14 +17,14 @@ const useGetMovie = () => {
       const list = moviesApi.filter(movie => movie.nameRus.toLowerCase().includes(movieName.toLowerCase())
                                     || movie.nameEN.toLowerCase().includes(movieName.toLowerCase()))
       list.length === 0 ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
-      setMovies(list)
+      setMovies(list);
     } catch (err) {
       setMovieErrorMessage(SERVER_ERROR_MESSAGE);
     } finally {
       setIsLoader(false);
     }
   }
-  return {handleSearchMovie, isLoader, movies, movieErrorMessage};
+  return {handleSearchMovie, movies, isLoader, movieErrorMessage};
 }
 
 export default useGetMovie;

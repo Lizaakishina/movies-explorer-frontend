@@ -4,29 +4,56 @@ import Preloader from "../Preloader/Preloader";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
-const MoviesList = ({isLoader, movies, movieErrorMessage}) => {
-  const [isButtonActive, setIsButtonActive] = useState(false);
-  const [moviesDisplay, setMovieDisplay] = useState([]);
+const MoviesList = ({movies, isLoader, movieErrorMessage}) => {
+  const [moviesDisplay, setMoviesDisplay] = useState([]);
+  const [count, setCount] = useState(0);
+  const [windowSize, setWindowsSite] = useState(window.screen.width)
   const url = useLocation();
 
-  useEffect (() => {
+  function handleChangeWindow () {
+    setWindowsSite(window.screen.width)
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleChangeWindow);
+    return () => {
+      window.removeEventListener("resize", handleChangeWindow);
+    }
+  })
+
+  useEffect(() => {
     if (url.pathname === "/movies") {
-      if (window.screen.width > 780) {
-        setMovieDisplay(movies.slice(0, 12));
-        movies.length > 12 && setIsButtonActive(true);
-      } else if (window.screen.width <= 780 && window.screen.width > 480) {
-        setMovieDisplay(movies.slice(0, 8));
-        movies.length > 8 && setIsButtonActive(true);
-      } else if (window.screen.width < 480) {
-        setMovieDisplay(movies.slice(0, 5));
-        movies.length > 5 && setIsButtonActive(true);
+      if (windowSize > 780) {
+        setCount(12)
+      } else if (windowSize <= 780 && windowSize > 480) {
+        setCount(8)
+      } else if (windowSize <= 480) {
+        setCount(5);
       }
     }
-  }, [movies])
+  }, [url.pathname, windowSize])
 
-  window.addEventListener("resize", () => {
-    //console.log(window.screen.width)
-  });
+  useEffect(() => {
+    if (url.pathname === "/movies") {
+      if (windowSize > 780) {
+        setMoviesDisplay(movies.slice(0, count));
+      } else if (windowSize <= 780 && windowSize > 480) {
+        setMoviesDisplay(movies.slice(0, count));
+      } else if (windowSize <= 480) {
+        setMoviesDisplay(movies.slice(0, count));
+      }
+    }
+  }, [count, movies, url.pathname, windowSize])
+
+  function handleMovieDisplay () {
+    if (windowSize > 780) {
+      setMoviesDisplay(movies.slice(0, moviesDisplay.length + 3))
+    } else if (windowSize <= 780 && windowSize > 480) {
+      setMoviesDisplay(movies.slice(0, moviesDisplay.length + 2))
+    } else if (windowSize <= 480) {
+      setMoviesDisplay(movies.slice(0, moviesDisplay.length + 2))
+    }
+  }
 
   let movieElement;
   if (url.pathname==="/movies") {
@@ -38,6 +65,7 @@ const MoviesList = ({isLoader, movies, movieErrorMessage}) => {
         image={movie.image.url}
         time={movie.time}
         movie={movie}
+        trailer={movie.trailerLink}
         />
       </li>
     ))
@@ -50,7 +78,9 @@ const MoviesList = ({isLoader, movies, movieErrorMessage}) => {
         {movieElement}
       </ul>
       {isLoader && <Preloader />}
-      {(url.pathname==="/movies" && isButtonActive ) && <button type="button" className="button moviesList__button">Ещё</button>}
+      {(url.pathname==="/movies" && movies.length > moviesDisplay.length) && 
+        <button type="button" className="button moviesList__button" onClick={handleMovieDisplay}>Ещё</button>
+      }
     </section>
   )
 }

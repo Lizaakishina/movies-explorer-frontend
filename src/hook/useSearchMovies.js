@@ -6,7 +6,7 @@ export const useSearchMovies = (type) => {
   useEffect(() => {
     if(type === "movies")
     setNameOfMovie(sessionStorage.getItem('movies') || '');
-  }, []);
+  }, [type]);
 
   function handleSearch (e) {
     e.preventDefault();
