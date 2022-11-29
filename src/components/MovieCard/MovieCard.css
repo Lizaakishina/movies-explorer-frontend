@@ -40,6 +40,10 @@
 .movieCard__shot {
   width: 100%;
   max-width: 364px;
+  height: 100%;
+  max-height: 203px;
   margin: 0;
   display: block;
+  object-fit: contain;
+  object-position: center;
 }

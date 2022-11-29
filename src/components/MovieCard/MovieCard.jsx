@@ -5,12 +5,12 @@ import save_disactive from "../../images/save_disactive.svg";
 import { useLocation } from "react-router";
 
 const MovieCard = ({nameRus, image, time}) => {
+  const url = useLocation();
   const isSaved = true;
   const moviesCardSaved = isSaved ? save_active : save_disactive;
   const moviesCardClose = url.pathname==="/movies" ? moviesCardSaved : close;
   const hour = (time / 60).toFixed(0);
   const minute = time % 60;
-  const url = useLocation();
   
   return (
     <div className="movieCard">

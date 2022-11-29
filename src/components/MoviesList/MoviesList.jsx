@@ -4,7 +4,7 @@ import Preloader from "../Preloader/Preloader";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
-const MoviesList = ({movies, isLoader, movieErrorMessage}) => {
+const MoviesList = ({isLoader, movies, movieErrorMessage}) => {
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [moviesDisplay, setMovieDisplay] = useState([]);
   const url = useLocation();
@@ -14,7 +14,7 @@ const MoviesList = ({movies, isLoader, movieErrorMessage}) => {
       if (window.screen.width > 780) {
         setMovieDisplay(movies.slice(0, 12));
         movies.length > 12 && setIsButtonActive(true);
-      }  else if (window.screen.width <= 780 && window.screen.width > 480) {
+      } else if (window.screen.width <= 780 && window.screen.width > 480) {
         setMovieDisplay(movies.slice(0, 8));
         movies.length > 8 && setIsButtonActive(true);
       } else if (window.screen.width < 480) {
@@ -24,13 +24,17 @@ const MoviesList = ({movies, isLoader, movieErrorMessage}) => {
     }
   }, [movies])
 
+  window.addEventListener("resize", () => {
+    //console.log(window.screen.width)
+  });
+
   let movieElement;
   if (url.pathname==="/movies") {
     movieElement = moviesDisplay.map(movie => (
       <li key={movie.id}>
         <MovieCard 
         key={movie.id}
-        nameRus={movie.nameRUS}
+        nameRus={movie.nameRus}
         image={movie.image.url}
         time={movie.time}
         movie={movie}
