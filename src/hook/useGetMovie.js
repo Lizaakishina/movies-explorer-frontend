@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getMovies } from "../utils/mainApi";
+import { getMovies } from "../utils/moviesApi";
 import { NOT_MOVIES_SEARCH_MESSAGE, SERVER_ERROR_MESSAGE } from "../utils/constants";
 
 const useGetMovie = () => {
