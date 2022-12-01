@@ -3,9 +3,16 @@ import Fieldset from "../Fieldset/Fieldset";
 import logo from "../../images/logo.svg";
 import "./Login.css";
 import { useValidation } from "../../hook/useValidation";
+import { useContext, useEffect } from "react";
+import { LoginContext } from "../../context/LoginContext";
 
 const Login = ({onSubmit, errorMessageApi}) => {
-  const { values, handleChange, errors, isValid } = useValidation();
+  const { values, handleChange, errors, isValid, resetForm } = useValidation();
+  const loggedIn = useContext(LoginContext);
+
+  useEffect(() => {
+    resetForm();
+  }, [loggedIn, resetForm])
 
   function handleSubmit (e) {
     e.preventDefault();

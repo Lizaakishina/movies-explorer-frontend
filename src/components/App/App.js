@@ -13,6 +13,7 @@ import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { LoginContext } from '../../context/LoginContext';
 import { useEffect, useState } from 'react';
 import { getUser, login, register } from '../../utils/mainApi';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 const App = ({history}) => {
   const [currentUser, setCurrentUser] = useState({name: '', email: ''})
@@ -78,21 +79,23 @@ const App = ({history}) => {
             <Route exact path="/">
               <Main />
             </Route>
-            <Route path="/movies">
-              <Movies
-                onSearch={handleSearchMovie}
-                movies={movies}
-                isLoader={isLoader}
-                onError={handleOpenPopup}
-                movieErrorMessage={movieErrorMessage}
-              />
-            </Route>
-            <Route path="/saved-movies">
-              <SavedMovies />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
+            <ProtectedRoute
+              path="/movies"
+              component={Movies}
+              onSearch={handleSearchMovie}
+              movies={movies}
+              isLoader={isLoader}
+              onError={handleOpenPopup}
+              movieErrorMessage={movieErrorMessage}
+            />
+            <ProtectedRoute
+              path="/saved-movies"
+              component={SavedMovies}
+            />
+            <ProtectedRoute
+              path="/profile"
+              component={Profile}
+            />
             <Route path="/signup">
               <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi}/>
             </Route>

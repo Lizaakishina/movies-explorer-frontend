@@ -6,11 +6,11 @@ import closeButton from "../../../images/close-button.svg";
 import useOpenMenu from "../../../hook/useOpenMenu";
 import "./PopupMenu.css";
 
-const PopupMenu = ({logIn}) => {
+const PopupMenu = ({loggedIn}) => {
   const {handlePopupClick, isButtonPopup} = useOpenMenu(false);
   return (
     <section className="popupMenu">
-      <button type="button" className={`button popupMenu__button ${logIn && "popupMenu__button_type_logIn"}`} onClick={handlePopupClick}>
+      <button type="button" className={`button popupMenu__button ${loggedIn && "popupMenu__button_type_logIn"}`} onClick={handlePopupClick}>
         <img className="popupMenu__line" src={line} alt="Линия"/>
         <img className="popupMenu__line" src={line} alt="Линия"/>
         <img className="popupMenu__line" src={line} alt="Линия"/>

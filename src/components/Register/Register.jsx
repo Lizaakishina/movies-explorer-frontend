@@ -3,11 +3,18 @@ import Fieldset from "../Fieldset/Fieldset";
 import logo from "../../images/logo.svg";
 import "./Register.css";
 import { useValidation } from "../../hook/useValidation";
+import { useCallback, useContext, useEffect } from "react";
+import { LoginContext } from "../../context/LoginContext";
 
 const Register = ({onSubmit, errorMessageApi}) => {
-  const { values, handleChange, errors, isValid } = useValidation();
+  const { values, handleChange, errors, isValid, resetForm } = useValidation();
+  const loggedIn = useContext(LoginContext);
 
-  function handleSubmit (e) {
+  useEffect(() => {
+    resetForm()
+  }, [loggedIn, resetForm]);
+
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
     onSubmit({
@@ -15,7 +22,7 @@ const Register = ({onSubmit, errorMessageApi}) => {
       email: values.email,
       password: values.password
     })
-  }
+  }, [values]);
 
   return (
     <main>

@@ -8,7 +8,7 @@ const Profile = () => {
   
   return (
     <>
-      <Header logIn={true}/>
+      <Header loggedIn={true}/>
       <main>
         <section className="profile">
           <h2 className="profile__hello">Привет, {currentUser.name}!</h2>
