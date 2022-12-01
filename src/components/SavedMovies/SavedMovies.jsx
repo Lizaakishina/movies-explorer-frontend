@@ -3,10 +3,10 @@ import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesList from "../MoviesList/MoviesList";
 import Footer from "../Footer/Footer";
 
-const SavedMovies = () => {
+const SavedMovies = ({loggedIn}) => {
   return (
     <>
-      <Header logIn={true}/>
+      <Header loggedIn={loggedIn}/>
       <main>
         <SearchForm />
         <MoviesList />

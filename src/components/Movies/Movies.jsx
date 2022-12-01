@@ -3,10 +3,10 @@ import SearchForm from "./SearchForm/SearchForm";
 import MoviesList from "../MoviesList/MoviesList";
 import Footer from "../Footer/Footer";
 
-const Movies = ({onSearch, movies, isLoader, onError, movieErrorMessage}) => {
+const Movies = ({loggedIn, onSearch, movies, isLoader, onError, movieErrorMessage}) => {
     return (
       <>
-        <Header logIn={true} />
+        <Header loggedIn={loggedIn} />
         <main>
           <SearchForm type="movies" onSearch={onSearch} onError={onError}/>
           <MoviesList movies={movies} isLoader={isLoader} movieErrorMessage={movieErrorMessage}/>

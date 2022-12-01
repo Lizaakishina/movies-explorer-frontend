@@ -10,32 +10,62 @@ import ErrorPopup from '../ErrorPopup/ErrorPopup';
 import useOpenPopup from '../../hook/useOpenPopup';
 import useGetMovie from '../../hook/useGetMovie';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
-import { useState } from 'react';
-import { login, register } from '../../utils/mainApi';
+import { LoginContext } from '../../context/LoginContext';
+import { useEffect, useState } from 'react';
+import { getUser, login, register } from '../../utils/mainApi';
 
 const App = ({history}) => {
-  const [currentUser, setCurrentUser] = useState({name: 'Елизавета', email: 'pochta@mail.ru'})
+  const [currentUser, setCurrentUser] = useState({name: '', email: ''})
+  const [loggedIn, setLoggedIn] = useState(false)
   const {handleOpenPopup, handleClosePopup, handleCLoseOverlay, isOpen, errorMessage} = useOpenPopup();
   const {handleSearchMovie, movies, isLoader, movieErrorMessage} = useGetMovie();
   const [errorMessageApi, setErrorMessageApi] = useState('');
+
+  useEffect(() => {
+    handleGetUser();
+  }, [])
 
   const handleRegister = async ({name, email, password}) => {
     try {
       setErrorMessageApi('');
       const res = await register({name, email, password});
-      setCurrentUser({ name, email })
-     
+      setCurrentUser({ name, email });
+      handleLogin({email, password});
     } catch (error) {
-      error.statusCode === 409 ? setErrorMessageApi(error.message) : setErrorMessageApi('При регистрации пользователя произошла ошибка.')
+      if (error.statusCode === 400) {
+        setErrorMessageApi('При регистрации пользователя произошла ошибка.')
+      } else if (error.statusCode === 409) {
+        setErrorMessageApi(error.message)
+      } else {
+        setErrorMessageApi(error.message)
+      }
     }
   }
 
   const handleLogin = async ({email, password}) => {
     try {
+      setErrorMessageApi('');
       const res = await login({email, password});
-      console.log(res.token);
+      setLoggedIn(true);
       localStorage.setItem('jwt', res.token);
       history.push('/movies');
+    } catch (error) {
+      setLoggedIn(false);
+      setErrorMessageApi(error.message);
+      console.log(error)
+    }
+  }
+
+  const handleGetUser = async () => {
+    try {
+      const user = await getUser();
+      if(user.name) {
+        setCurrentUser({name: user.name, email: user.email});
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+        localStorage.removeItem('jwt');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -43,36 +73,38 @@ const App = ({history}) => {
 
     return (
       <CurrentUserContext.Provider value={currentUser}>
-        <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
-          <Route path="/movies">
-            <Movies
-              onSearch={handleSearchMovie}
-              movies={movies}
-              isLoader={isLoader}
-              onError={handleOpenPopup}
-              movieErrorMessage={movieErrorMessage}
-            />
-          </Route>
-          <Route path="/saved-movies">
-            <SavedMovies />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/signup">
-            <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi}/>
-          </Route>
-          <Route path="/signin">
-            <Login onSubmit={handleLogin}/>
-          </Route>
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-        <ErrorPopup isOpen={isOpen} onClose={handleClosePopup} errorMessage={errorMessage} onCLoseOverlay={handleCLoseOverlay}/>
+        <LoginContext.Provider value={loggedIn}>
+          <Switch>
+            <Route exact path="/">
+              <Main />
+            </Route>
+            <Route path="/movies">
+              <Movies
+                onSearch={handleSearchMovie}
+                movies={movies}
+                isLoader={isLoader}
+                onError={handleOpenPopup}
+                movieErrorMessage={movieErrorMessage}
+              />
+            </Route>
+            <Route path="/saved-movies">
+              <SavedMovies />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/signup">
+              <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi}/>
+            </Route>
+            <Route path="/signin">
+              <Login onSubmit={handleLogin} errorMessageApi={errorMessageApi}/>
+            </Route>
+            <Route path="*">
+              <PageNotFound />
+           </Route>
+          </Switch>
+          <ErrorPopup isOpen={isOpen} onClose={handleClosePopup} errorMessage={errorMessage} onCLoseOverlay={handleCLoseOverlay}/>
+        </LoginContext.Provider>
       </CurrentUserContext.Provider>
     )
   }
