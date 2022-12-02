@@ -8,7 +8,7 @@ const SearchForm = ({type, onSearch, onError}) => {
   function handleSearchMovie (e) {
     handleSearch(e);
     if (!!nameOfMovie) {
-      onSearch(e, nameOfMovie);
+      onSearch(nameOfMovie);
     } else {
       onError("Нужно ввести ключевые слова")
     }

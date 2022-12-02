@@ -5,12 +5,12 @@ export const useSearchMovies = (type) => {
 
   useEffect(() => {
     if(type === "movies")
-    setNameOfMovie(sessionStorage.getItem('movies') || '');
+    setNameOfMovie(sessionStorage.getItem('moviesName') || '');
   }, [type]);
 
   function handleSearch (e) {
     e.preventDefault();
-    sessionStorage.setItem('movies', nameOfMovie);
+    sessionStorage.setItem('moviesName', nameOfMovie);
   }
 
   function handleChange (e) {

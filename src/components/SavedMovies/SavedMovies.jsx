@@ -3,13 +3,13 @@ import SearchForm from "../Movies/SearchForm/SearchForm";
 import MoviesList from "../MoviesList/MoviesList";
 import Footer from "../Footer/Footer";
 
-const SavedMovies = ({loggedIn}) => {
+const SavedMovies = ({loggedIn, savedMovies, onDeleteMovie}) => {
   return (
     <>
       <Header loggedIn={loggedIn}/>
       <main>
         <SearchForm />
-        <MoviesList />
+        <MoviesList filterMovies={savedMovies} onDeleteMovie={onDeleteMovie}/>
       </main>
       <Footer />
     </>

@@ -8,29 +8,48 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import ErrorPopup from '../ErrorPopup/ErrorPopup';
 import useOpenPopup from '../../hook/useOpenPopup';
-import useGetMovie from '../../hook/useGetMovie';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { LoginContext } from '../../context/LoginContext';
 import { useEffect, useState } from 'react';
-import { getUser, login, register } from '../../utils/mainApi';
+import { createMovies, deleteMovie, getSavedMovies, getUser, login, register } from '../../utils/mainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { getMovies } from '../../utils/moviesApi';
+import { NOT_MOVIES_SEARCH_MESSAGE, SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import Preloader from '../Preloader/Preloader';
 
 const App = ({history}) => {
-  const [currentUser, setCurrentUser] = useState({name: '', email: ''})
+  const [savedMovies, setSavedMovies] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false)
   const {handleOpenPopup, handleClosePopup, handleCLoseOverlay, isOpen, errorMessage} = useOpenPopup();
-  const {handleSearchMovie, movies, isLoader, movieErrorMessage} = useGetMovie();
+  const [currentUser, setCurrentUser] = useState({_id: '', name: '', email: ''})
+  const [filterMovies, setFilterMovies] = useState([]);
+  const [isLoaderPage, setIsLoaderPage] = useState(true);
+  const [isLoader, setIsLoader] = useState(false);
+  const [movieErrorMessage, setMovieErrorMessage] = useState('');
   const [errorMessageApi, setErrorMessageApi] = useState('');
 
   useEffect(() => {
-    handleGetUser();
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      handleGetUser(token)
+    } else {
+      setIsLoaderPage(false);
+    }
   }, [])
+
+  useEffect(() => {
+    if(loggedIn) {
+      handleGetSavedMovies();
+      handleGetUser(localStorage.getItem('jwt'))
+    } else {
+      setSavedMovies([]);
+    }
+  }, [loggedIn])
 
   const handleRegister = async ({name, email, password}) => {
     try {
       setErrorMessageApi('');
       const res = await register({name, email, password});
-      setCurrentUser({ name, email });
       handleLogin({email, password});
     } catch (error) {
       if (error.statusCode === 400) {
@@ -47,9 +66,12 @@ const App = ({history}) => {
     try {
       setErrorMessageApi('');
       const res = await login({email, password});
-      setLoggedIn(true);
       localStorage.setItem('jwt', res.token);
+      const user = await getUser(res.token);
+      setCurrentUser({_id: user._id, name: user.name, email: user.email});
+      setLoggedIn(true);
       history.push('/movies');
+      handleGetSavedMovies();
     } catch (error) {
       setLoggedIn(false);
       setErrorMessageApi(error.message);
@@ -57,23 +79,71 @@ const App = ({history}) => {
     }
   }
 
-  const handleGetUser = async () => {
+  const handleGetUser = async (token) => {
     try {
-      const user = await getUser();
+      const user = await getUser(token);
       if(user.name) {
-        setCurrentUser({name: user.name, email: user.email});
         setLoggedIn(true);
+        setCurrentUser({_id: user._id, name: user.name, email: user.email});
+        handleGetSavedMovies();
+        setIsLoaderPage(false);
       } else {
-        setLoggedIn(false);
         localStorage.removeItem('jwt');
+        sessionStorage.removeItem('moviesName');
       }
     } catch (error) {
+      sessionStorage.removeItem('moviesName');
+      setIsLoaderPage(false);
       console.log(error);
     }
   }
 
-    return (
-      <CurrentUserContext.Provider value={currentUser}>
+  const handleSignOut = () => {
+    localStorage.removeItem('jwt');
+    sessionStorage.removeItem('moviesName');
+    setLoggedIn(false);
+    setFilterMovies([]);
+    setSavedMovies([]);
+    setCurrentUser({_id: '', name: '', email: ''});
+  }
+
+  const handleSearchMovies = async (movieName) => {
+    try {
+      setMovieErrorMessage('')
+      setIsLoader(true);
+      const moviesApi = await getMovies();
+
+      const list = moviesApi.filter(movie => movie.nameRU.toLowerCase().includes(movieName.toLowerCase())
+                                          || movie.nameEN.toLowerCase().includes(movieName.toLowerCase()))
+      list.length === 0 ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
+      setFilterMovies(list);
+
+    } catch (err) {
+      setMovieErrorMessage(SERVER_ERROR_MESSAGE);
+    } finally {
+      setIsLoader(false);
+    }
+  }
+
+  const handleGetSavedMovies = async () => {
+    const data = await getSavedMovies()
+    setSavedMovies(data);
+  }
+
+  const handleCreateMovie = async (movie) => {
+    const data = await createMovies(movie);
+    handleGetSavedMovies();
+  }
+
+  const handleDeleteMovie = async (movie) => {
+    const data = await deleteMovie(movie);
+    setSavedMovies((movies) => {
+      return movies.filter(item => item !== movie);
+    })
+  }
+
+    return (isLoaderPage ? <Preloader /> :
+      (<CurrentUserContext.Provider value={currentUser}>
         <LoginContext.Provider value={loggedIn}>
           <Switch>
             <Route exact path="/">
@@ -82,19 +152,25 @@ const App = ({history}) => {
             <ProtectedRoute
               path="/movies"
               component={Movies}
-              onSearch={handleSearchMovie}
-              movies={movies}
+              onSearch={handleSearchMovies}
+              filterMovies={filterMovies}
+              savedMovies={savedMovies}
               isLoader={isLoader}
               onError={handleOpenPopup}
               movieErrorMessage={movieErrorMessage}
+              onCreateMovie={handleCreateMovie}
+              onDeleteMovie={handleDeleteMovie}
             />
             <ProtectedRoute
               path="/saved-movies"
               component={SavedMovies}
+              savedMovies={savedMovies}
+              onDeleteMovie={handleDeleteMovie}
             />
             <ProtectedRoute
               path="/profile"
               component={Profile}
+              onSignOut={handleSignOut}
             />
             <Route path="/signup">
               <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi}/>
@@ -108,7 +184,7 @@ const App = ({history}) => {
           </Switch>
           <ErrorPopup isOpen={isOpen} onClose={handleClosePopup} errorMessage={errorMessage} onCLoseOverlay={handleCLoseOverlay}/>
         </LoginContext.Provider>
-      </CurrentUserContext.Provider>
+      </CurrentUserContext.Provider>)
     )
   }
   
