@@ -1,17 +1,19 @@
 import { useState } from "react";
 
 const useOpenPopup = () => {
+  const [isError, setIsError] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('')
 
-  function handleOpenPopup (message) {
+  const handleOpenPopup = (message, boolean) => {
+    setIsError(boolean)
     setIsOpen(true);
     setErrorMessage(message);
-    document.addEventListener("keydown", handleEscClose);
+    document.addEventListener("keydown", handleKeyClose);
   }
 
   function handleClosePopup () {
-    document.removeEventListener("keydown", handleEscClose);
+    document.removeEventListener("keydown", handleKeyClose);
     setIsOpen(false);
     setTimeout(() => {setErrorMessage('');}, "500");
   }
@@ -22,11 +24,11 @@ const useOpenPopup = () => {
     }
   }
 
-  function handleEscClose (e) {
-    e.key === "Escape" && handleClosePopup();
+  function handleKeyClose (e) {
+    (e.key === "Escape" || e.key === "Enter") && handleClosePopup();
   }
 
-  return {handleOpenPopup, handleClosePopup, handleCLoseOverlay, isOpen, errorMessage};
+  return {handleOpenPopup, handleClosePopup, handleCLoseOverlay, isOpen, errorMessage, isError};
 }
 
 export default useOpenPopup;

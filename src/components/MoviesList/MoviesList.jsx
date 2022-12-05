@@ -4,7 +4,7 @@ import Preloader from "../Preloader/Preloader";
 import { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
-const MoviesList = ({filterMovies, isLoader, movieErrorMessage, onCreateMovie, savedMovies, onDeleteMovie}) => {
+const MoviesList = ({filterMovies, isLoader, movieErrorMessage, onCreateMovie, savedMovies, onDeleteMovie, filterSavedMovies = null }) => {
   const [moviesDisplay, setMoviesDisplay] = useState([]);
   const [count, setCount] = useState(0);
   const [windowSize, setWindowsSite] = useState(window.screen.width)
@@ -32,12 +32,16 @@ const MoviesList = ({filterMovies, isLoader, movieErrorMessage, onCreateMovie, s
   }, [windowSize])
 
   useEffect(() => {
-    if (windowSize > 780) {
-      setMoviesDisplay(filterMovies.slice(0, count));
-    } else if (windowSize <= 780 && windowSize > 480) {
-      setMoviesDisplay(filterMovies.slice(0, count));
-    } else if (windowSize <= 480) {
-      setMoviesDisplay(filterMovies.slice(0, count));
+    if (url.pathname === '/movies') {
+      if (windowSize > 780) {
+        setMoviesDisplay(filterMovies.slice(0, count));
+      }  else if (windowSize <= 780 && windowSize > 480) {
+        setMoviesDisplay(filterMovies.slice(0, count));
+      } else if (windowSize <= 480) {
+        setMoviesDisplay(filterMovies.slice(0, count));
+      }
+    } else {
+      setMoviesDisplay(filterMovies)
     }
   }, [filterMovies, count])
 

@@ -1,16 +1,19 @@
 import "./SearchForm.css";
 import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
 import { useSearchMovies } from "../../../hook/useSearchMovies";
+import { useLocation } from "react-router-dom";
 
 const SearchForm = ({type, onSearch, onError}) => {
   const {handleChange, handleSearch, nameOfMovie} = useSearchMovies(type)
+  const url = useLocation();
 
   function handleSearchMovie (e) {
-    handleSearch(e);
+    e.preventDefault();
+    url.pathname === '/movies' && handleSearch();
     if (!!nameOfMovie) {
       onSearch(nameOfMovie);
     } else {
-      onError("Нужно ввести ключевые слова")
+      onError("Нужно ввести ключевые слова", true)
     }
   }
 

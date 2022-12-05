@@ -7,7 +7,7 @@ import { useEffect } from "react";
 const Movies = ({loggedIn, onSearch, filterMovies, savedMovies, isLoader, onError, movieErrorMessage, onCreateMovie, onDeleteMovie}) => {
 
   useEffect(() => {
-    onSearch(sessionStorage.getItem('moviesName'))
+    onSearch(localStorage.getItem('moviesName'))
   }, [])
     return (
       <>
