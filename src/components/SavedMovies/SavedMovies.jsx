@@ -7,25 +7,27 @@ import useFilterMovies from "../../hook/useFilterMovies";
 
 const SavedMovies = ({loggedIn, savedMovies, onDeleteMovie, filterSavedMovies}) => {
   const [movie, setMovies] = useState([])
-  const {handleSearch} = useFilterMovies();
+  const {handleSearch, handleCheckbox} = useFilterMovies();
   useEffect(() => {
     setMovies(savedMovies)
   }, [savedMovies])
 
-  const handleSearchMovies = (movieName) => {
-    const list = handleSearch(savedMovies, movieName)
-    setMovies(list)
+  const handleSearchMovies = (movieName, checked) => {
+    const list = handleSearch(savedMovies, movieName);
+    const shortList = handleCheckbox(list, checked);
+    setMovies(shortList)
   }
 
-  const handleResetSearch = () => {
-    setMovies(savedMovies);
+  const handleResetSearch = (checked) => {
+    const shortList = handleCheckbox(savedMovies, checked);
+    setMovies(shortList);
   }
 
   return (
     <>
       <Header loggedIn={loggedIn}/>
       <main>
-        <SearchForm onSearch={handleSearchMovies} onError={handleResetSearch}/>
+        <SearchForm onSearch={handleSearchMovies} onResetForm={handleResetSearch}/>
         <MoviesList filterMovies={movie} onDeleteMovie={onDeleteMovie} filterSavedMovies={filterSavedMovies}/>
       </main>
       <Footer />

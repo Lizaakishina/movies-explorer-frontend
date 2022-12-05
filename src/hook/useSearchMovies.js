@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 
 export const useSearchMovies = (type) => {
-  const [nameOfMovie, setNameOfMovie] = useState('');
+  const [nameMovie, setNameMovie] = useState('');
 
   useEffect(() => {
     if(type === "movies")
-    setNameOfMovie(localStorage.getItem('moviesName') || '');
+    setNameMovie(sessionStorage.getItem('moviesName') || '');
   }, [type]);
 
-  const handleSearch = () => {
-    localStorage.setItem('moviesName', nameOfMovie);
+  const handleSetItem  = () => {
+    sessionStorage.setItem('moviesName', nameMovie);
   }
 
   function handleChange (e) {
-    setNameOfMovie(e.target.value);
+    setNameMovie(e.target.value);
   }
 
-  return {handleChange, handleSearch, nameOfMovie}
+  return {handleChange, handleSetItem, nameMovie}
 }

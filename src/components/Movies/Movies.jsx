@@ -2,18 +2,14 @@ import Header from "../Header/Header";
 import SearchForm from "./SearchForm/SearchForm";
 import MoviesList from "../MoviesList/MoviesList";
 import Footer from "../Footer/Footer";
-import { useEffect } from "react";
 
-const Movies = ({loggedIn, onSearch, filterMovies, savedMovies, isLoader, onError, movieErrorMessage, onCreateMovie, onDeleteMovie}) => {
+const Movies = ({loggedIn, onSearch, filterMovies, savedMovies, isLoader, onError, movieErrorMessage, onCreateMovie, onDeleteMovie, isShort}) => {
 
-  useEffect(() => {
-    onSearch(localStorage.getItem('moviesName'))
-  }, [])
     return (
       <>
         <Header loggedIn={loggedIn} />
         <main>
-          <SearchForm type="movies" onSearch={onSearch} onError={onError}/>
+          <SearchForm type="movies" onSearch={onSearch} onError={onError} isShort={isShort}/>
           <MoviesList
             savedMovies={savedMovies}
             filterMovies={filterMovies}

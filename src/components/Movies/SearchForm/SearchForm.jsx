@@ -2,19 +2,31 @@ import "./SearchForm.css";
 import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
 import { useSearchMovies } from "../../../hook/useSearchMovies";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
-const SearchForm = ({type, onSearch, onError}) => {
-  const {handleChange, handleSearch, nameOfMovie} = useSearchMovies(type)
+const SearchForm = ({type, onSearch, onError, isShort, onResetForm}) => {
+  const [checked, setChecked] = useState(false);
+  const {handleChange, handleSetItem, nameMovie} = useSearchMovies(type)
   const url = useLocation();
 
   function handleSearchMovie (e) {
     e.preventDefault();
-    url.pathname === '/movies' && handleSearch();
-    if (!!nameOfMovie) {
-      onSearch(nameOfMovie);
+    if (url.pathname === '/movies') {
+      handleSetItem(); 
+      sessionStorage.setItem('checkbox', checked)
+    };
+
+    if (!!nameMovie) {
+      onSearch(nameMovie, checked);
     } else {
-      onError("Нужно ввести ключевые слова", true)
+      url.pathname === '/movies'
+      ? onError("Нужно ввести ключевык слова", true)
+      : onResetForm(checked);
     }
+  }
+
+  const handleChangeChecked = (checked) => {
+    setChecked(checked);
   }
 
   return (
@@ -29,14 +41,14 @@ const SearchForm = ({type, onSearch, onError}) => {
               id="search"
               name="movie"
               onChange={handleChange}
-              value={nameOfMovie}
+              value={nameMovie}
               required
             />
           </label>
         </fieldset>
         <button className="button button_type_search">Поиск</button>
       </form>
-      <FilterCheckbox />
+      <FilterCheckbox onChangeChecked={handleChangeChecked} isShort={isShort}/>
       <div className="searchForm__line"></div>
     </div>
   )
