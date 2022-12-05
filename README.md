@@ -1,6 +1,8 @@
 # movies-explorer-frontend
 Ссылка на макет: https://disk.yandex.ru/d/LbLRVwp16E35bA
 
+Ссылка на сайт: https://ak1s4.movies-explorer.nomoredomains.club
+
 Фронтенд для дипломного проекта Movies Explorer на курсе *Веб-разработки Яндекс.Практикума.*
 
 Movies Explorer - сервис, в котором можно найти фильмы по запросу и сохранить их в личном кабинете.
@@ -18,3 +20,4 @@ Movies Explorer - сервис, в котором можно найти филь
 
 ## Автор:
 Елизавета Акишина
+Публичный IP: 84.252.131.87
