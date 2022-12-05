@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://api.ak1s4.movies-explorer.nomoredomains.icu';
 
 const imageUrl = 'https://api.nomoreparties.co';
 
