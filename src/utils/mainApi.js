@@ -21,7 +21,6 @@ export const register = async ({name, email, password}) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      mode: 'no-cors',
       body: JSON.stringify({ name, email, password })
     });
     const data = await checkAnswer(res);
