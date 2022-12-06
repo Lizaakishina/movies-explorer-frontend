@@ -1,5 +1,6 @@
 import Title from "../../Title/Title";
 import "./Techs.css";
+import { memo } from "react";
 
 const Techs = () => {
   return (
@@ -36,4 +37,4 @@ const Techs = () => {
   )
 }
 
-export default Techs;
+export default memo(Techs);

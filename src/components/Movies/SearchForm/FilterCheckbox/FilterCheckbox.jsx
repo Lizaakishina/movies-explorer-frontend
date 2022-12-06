@@ -1,10 +1,6 @@
 import "./FilterCheckbox.css";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 const FilterCheckbox = ({onChangeChecked, isShort}) => {
-  const url = useLocation();
-
   const handleChange = (e) => {
     onChangeChecked(e.target.checked)
   }

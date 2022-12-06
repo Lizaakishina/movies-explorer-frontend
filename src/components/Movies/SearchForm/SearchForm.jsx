@@ -4,7 +4,7 @@ import { useSearchMovies } from "../../../hook/useSearchMovies";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
-const SearchForm = ({type, onSearch, onError, isShort, onResetForm}) => {
+const SearchForm = ({type, onSearch, onError, isShort, onResetForm, onChange, isLoader}) => {
   const [checked, setChecked] = useState(false);
   const {handleChange, handleSetItem, nameMovie} = useSearchMovies(type)
   const url = useLocation();
@@ -27,6 +27,7 @@ const SearchForm = ({type, onSearch, onError, isShort, onResetForm}) => {
 
   const handleChangeChecked = (checked) => {
     setChecked(checked);
+    onChange(checked)
   }
 
   return (
@@ -46,7 +47,7 @@ const SearchForm = ({type, onSearch, onError, isShort, onResetForm}) => {
             />
           </label>
         </fieldset>
-        <button className="button button_type_search">Поиск</button>
+        <button className="button button_type_search" disabled={isLoader}>Поиск</button>
       </form>
       <FilterCheckbox onChangeChecked={handleChangeChecked} isShort={isShort}/>
       <div className="searchForm__line"></div>

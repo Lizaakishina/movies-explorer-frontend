@@ -1,5 +1,6 @@
 import './Promo.css';
 import PageNav from './PageNav/PageNav';
+import { memo } from 'react';
 
 const Promo = () => {
   return (
@@ -10,4 +11,4 @@ const Promo = () => {
   )
 }
 
-export default Promo;
+export default memo(Promo);

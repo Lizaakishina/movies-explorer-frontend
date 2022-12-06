@@ -1,3 +1,4 @@
+//компоненты сайта
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -5,22 +6,24 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import { Switch, Route, withRouter } from 'react-router-dom';
 import ErrorPopup from '../ErrorPopup/ErrorPopup';
-import useOpenPopup from '../../hook/useOpenPopup';
+import Preloader from '../Preloader/Preloader';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+//реакт
+import { useCallback, useEffect, useState } from 'react';
+import { Switch, Route, withRouter } from 'react-router-dom';
+//контексты и утилиты
+import { NOT_MOVIES_SEARCH_MESSAGE, MOVIES_SERVER_ERROR_MESSAGE } from '../../utils/constants';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { LoginContext } from '../../context/LoginContext';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createMovies, deleteMovie, getSavedMovies, getUser, login, register, updateUser } from '../../utils/mainApi';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { getMovies } from '../../utils/moviesApi';
-import { NOT_MOVIES_SEARCH_MESSAGE, SERVER_ERROR_MESSAGE } from '../../utils/constants';
-import Preloader from '../Preloader/Preloader';
+//хуки
+import useOpenPopup from '../../hook/useOpenPopup';
 import useFilterMovies from '../../hook/useFilterMovies';
 
 const App = ({history}) => {
   const [savedMovies, setSavedMovies] = useState([]);
-  const [filterSavedMovies, setFilterSavedMovies] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false)
   const {handleOpenPopup, handleClosePopup, handleCLoseOverlay, isOpen, errorMessage, isError} = useOpenPopup();
   const [currentUser, setCurrentUser] = useState({_id: '', name: '', email: ''});
@@ -51,7 +54,6 @@ const App = ({history}) => {
       const list = handleSearch(moviesFromServer, moviesName);
       const shortList = handleCheckbox(list, isShort);
       setFilterMovies(shortList);
-      shortList.length === 0 ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
     }
   }, [moviesFromServer])
 
@@ -66,7 +68,7 @@ const App = ({history}) => {
 
   const handleRegister = async ({name, email, password}) => {
     try {
-      setErrorMessageApi('');
+      setIsLoader(true);
       const res = await register({name, email, password});
       handleLogin({email, password});
     } catch (error) {
@@ -78,6 +80,7 @@ const App = ({history}) => {
         setErrorMessageApi(error.message)
       }
     } finally {
+      setIsLoader(false);
       setTimeout(() => {
         setErrorMessageApi('');
       }, 3000)
@@ -86,7 +89,7 @@ const App = ({history}) => {
 
   const handleLogin = async ({email, password}) => {
     try {
-      setErrorMessageApi('');
+      setIsLoader(true);
       const res = await login({email, password});
       localStorage.setItem('jwt', res.token);
       const user = await getUser(res.token);
@@ -98,6 +101,11 @@ const App = ({history}) => {
       setLoggedIn(false);
       setErrorMessageApi(error.message);
       console.log(error)
+    } finally {
+      setIsLoader(false);
+      setTimeout(() => {
+        setErrorMessageApi('');
+      }, 3000)
     }
   }
 
@@ -112,23 +120,25 @@ const App = ({history}) => {
       } else {
         localStorage.removeItem('jwt');
         sessionStorage.removeItem('moviesName');
+        sessionStorage.removeItem('checkbox')
       }
     } catch (error) {
       sessionStorage.removeItem('moviesName');
       setIsLoaderPage(false);
       console.log(error);
-    }
+    } 
   }
 
   const handleUpdateUser = async ({name, email}) => {
     try {
-      setErrorMessageApi('');
+      setIsLoader(true);
       const user = await updateUser({name, email});
       setCurrentUser({_id: user._id, name: user.name, email: user.email});
       handleOpenPopup("Данные успешно обновлены", false)
     } catch (error) {
       error.statusCode === 409 ? setErrorMessageApi(error.message) : setErrorMessageApi("При обновлении профиля произошла ошибка.");
     } finally {
+      setIsLoader(false);
       setTimeout(() => {
         setErrorMessageApi('');
       }, 3000)
@@ -146,44 +156,65 @@ const App = ({history}) => {
 
   const handleGetMovies  = async () => {
     try {
-      setMovieErrorMessage('')
+      setIsLoader(true);
+      setMovieErrorMessage('');
       if (moviesFromServer.length === 0) {
         const moviesApi = await getMovies();
         setMoviesFromServer(moviesApi);
       } 
-    } catch (err) {
-      setMovieErrorMessage(SERVER_ERROR_MESSAGE);
+    } catch (error) {
+      setMovieErrorMessage(MOVIES_SERVER_ERROR_MESSAGE);
     } finally {
       setIsLoader(false);
     }
   }
 
-  const handleSearchMovies = (movieName, checked) => {
+  const handleSearchMovies = async (movieName, checked) => {
     setIsShort(checked);
-    setMovieErrorMessage('')
-    setIsLoader(true);
+    await setIsLoader(true);
     handleGetMovies();
     const list = handleSearch(moviesFromServer, movieName);
     const shortList = handleCheckbox(list, checked);
-    shortList.length === 0 ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
     setFilterMovies(shortList);
+    await setIsLoader(false);
+    (shortList.length === 0 && !isLoader) ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
   }
 
   const handleGetSavedMovies = async () => {
-    const data = await getSavedMovies()
-    setSavedMovies(data);
+    try {
+      const data = await getSavedMovies()
+      setSavedMovies(data);
+    } catch (error) {
+      setMovieErrorMessage(MOVIES_SERVER_ERROR_MESSAGE);
+      console.log(error)
+    }
   }
 
   const handleCreateMovie = async (movie) => {
-    const data = await createMovies(movie);
-    handleGetSavedMovies();
+    try {
+      const data = await createMovies(movie);
+      handleGetSavedMovies();
+    } catch(error) {
+      setMovieErrorMessage(MOVIES_SERVER_ERROR_MESSAGE)
+    }
   }
 
   const handleDeleteMovie = async (movie) => {
-    const data = await deleteMovie(movie);
-    setSavedMovies((movies) => {
-      return movies.filter(item => item !== movie);
-    })
+    try {
+      const data = await deleteMovie(movie);
+      setSavedMovies((movies) => {
+        return movies.filter(item => item._id !== data._id);
+      })
+    } catch(err) {
+      setMovieErrorMessage(MOVIES_SERVER_ERROR_MESSAGE)
+    }
+  }
+
+  const handleChangeChecked = (checked) => {
+    if (filterMovies.length > 0) {
+    handleSearchMovies(sessionStorage.getItem('moviesName'), checked);
+    sessionStorage.setItem('checkbox', checked)
+    }
   }
 
     return (isLoaderPage ? <Preloader /> :
@@ -205,13 +236,14 @@ const App = ({history}) => {
               onCreateMovie={handleCreateMovie}
               onDeleteMovie={handleDeleteMovie}
               isShort={isShort}
+              onChange={handleChangeChecked}
             />
             <ProtectedRoute
               path="/saved-movies"
               component={SavedMovies}
               savedMovies={savedMovies}
               onDeleteMovie={handleDeleteMovie}
-              filterSavedMovies={filterSavedMovies}
+              isLoader={isLoader}
             />
             <ProtectedRoute
               path="/profile"
@@ -219,12 +251,13 @@ const App = ({history}) => {
               onSignOut={handleSignOut}
               onUpdateUser={handleUpdateUser}
               errorMessageApi={errorMessageApi}
+              isLoader={isLoader}
             />
             <Route path="/signup">
-              <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi}/>
+              <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi} isLoader={isLoader}/>
             </Route>
             <Route path="/signin">
-              <Login onSubmit={handleLogin} errorMessageApi={errorMessageApi}/>
+              <Login onSubmit={handleLogin} errorMessageApi={errorMessageApi} isLoader={isLoader}/>
             </Route>
             <Route path="*">
               <PageNotFound />

@@ -3,7 +3,7 @@ import {Link, NavLink} from "react-router-dom";
 import logo from "../../images/logo.svg";
 import chel from "../../images/chel.svg";
 import PopupMenu from "./PopupMenu/PopupMenu";
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { LoginContext } from "../../context/LoginContext";
 
 const Header = () => {
@@ -43,4 +43,4 @@ const Header = () => {
   )
 }
 
-export default Header;
+export default memo(Header);

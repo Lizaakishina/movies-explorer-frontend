@@ -5,6 +5,7 @@ import Techs from './Techs/Techs';
 import AboutMe from './AboutMe/AboutMe';
 import Portfolio from './Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
+import { memo } from 'react';
 
 const Main = ({loggedIn}) => {
     return (
@@ -22,4 +23,4 @@ const Main = ({loggedIn}) => {
     )
   }
   
-  export default Main;
+  export default memo(Main);

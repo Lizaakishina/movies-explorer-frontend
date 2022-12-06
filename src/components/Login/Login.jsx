@@ -1,27 +1,31 @@
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import Fieldset from "../Fieldset/Fieldset";
 import logo from "../../images/logo.svg";
 import "./Login.css";
 import { useValidation } from "../../hook/useValidation";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { LoginContext } from "../../context/LoginContext";
 
-const Login = ({onSubmit, errorMessageApi}) => {
+const Login = ({history, onSubmit, errorMessageApi, isLoader}) => {
   const { values, handleChange, errors, isValid, resetForm } = useValidation();
   const loggedIn = useContext(LoginContext);
+
+  useEffect(() => {
+    loggedIn && history.push('/');
+  }, [])
 
   useEffect(() => {
     resetForm();
   }, [loggedIn, resetForm])
 
-  function handleSubmit (e) {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
     onSubmit({
       email: values.email,
       password: values.password
     })
-  }
+  }, [values]);
 
   return (
     <main>
@@ -52,7 +56,9 @@ const Login = ({onSubmit, errorMessageApi}) => {
             isValid={isValid}
           />
           <span className={`login__errorMessage ${!!errorMessageApi && "login__errorMessage_active"}`}>{errorMessageApi}</span>
-          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid}>Войти</button> 
+          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid && isValid}>
+            {isLoader ? "Выполняется вход..." : "Войти"}
+          </button>
         </form>
         <p className="login__ask">Ещё не зарегистрированы? <Link to="/signup" className="link login__link">Регистрация</Link></p>
       </section>
@@ -60,4 +66,4 @@ const Login = ({onSubmit, errorMessageApi}) => {
   )
 }
 
-export default Login;
+export default withRouter(Login);

@@ -1,5 +1,6 @@
 import Title from "../../Title/Title";
 import "./AboutProject.css";
+import { memo } from "react";
 
 const AboutProject = () => {
   return (
@@ -29,4 +30,4 @@ const AboutProject = () => {
   )
 }
 
-export default AboutProject;
+export default memo(AboutProject);

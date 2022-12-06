@@ -1,10 +1,10 @@
 import Header from "../Header/Header";
 import "./Profile.css";
-import { useContext, useEffect } from "react";
+import { memo, useCallback, useContext, useEffect } from "react";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import { useValidation } from "../../hook/useValidation";
 
-const Profile = ({onSignOut, onUpdateUser, errorMessageApi}) => {
+const Profile = ({onSignOut, onUpdateUser, errorMessageApi, isLoader}) => {
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isValid, resetForm } = useValidation();
   const isButtonActive = (isValid && (currentUser.name !== values.name || currentUser.email !== values.email));
@@ -13,13 +13,13 @@ const Profile = ({onSignOut, onUpdateUser, errorMessageApi}) => {
     resetForm(currentUser);
   }, [resetForm, currentUser])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
     onUpdateUser({
       name: values.name,
       email: values.email
     });
-  }
+  }, [values]);
 
   return (
     <>
@@ -59,11 +59,8 @@ const Profile = ({onSignOut, onUpdateUser, errorMessageApi}) => {
                 <span className={`form__input-error ${!!errors.email && 'form__input-error_active'}`}>{errors.email}</span>
               </fieldset>
               <span className={`profile__errorMessage ${!!errorMessageApi && "profile__errorMessage_active"}`}>{errorMessageApi}</span>
-              <button 
-                className={`button profile__edit ${isButtonActive && "profile__edit_active"}`}
-                disabled={!isButtonActive}
-              >
-                Редактировать
+              <button className={`button profile__edit ${isButtonActive && "profile__edit_active"}`} disabled={!isButtonActive}>
+                {isLoader ? "Сохранение..." : "Редактировать"}
               </button>
             </form>
           </div>
@@ -74,4 +71,4 @@ const Profile = ({onSignOut, onUpdateUser, errorMessageApi}) => {
   )
 }
 
-export default Profile;
+export default memo(Profile);

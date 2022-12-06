@@ -1,14 +1,18 @@
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import Fieldset from "../Fieldset/Fieldset";
 import logo from "../../images/logo.svg";
 import "./Register.css";
 import { useValidation } from "../../hook/useValidation";
-import { useCallback, useContext, useEffect } from "react";
 import { LoginContext } from "../../context/LoginContext";
+import { useCallback, useContext, useEffect } from "react";
 
-const Register = ({onSubmit, errorMessageApi}) => {
+const Register = ({history, onSubmit, errorMessageApi, isLoader}) => {
   const { values, handleChange, errors, isValid, resetForm } = useValidation();
   const loggedIn = useContext(LoginContext);
+
+  useEffect(() => {
+    loggedIn && history.push('/');
+  }, [])
 
   useEffect(() => {
     resetForm()
@@ -65,7 +69,9 @@ const Register = ({onSubmit, errorMessageApi}) => {
             isValid={isValid}
           />
           <span className={`register__errorMessage ${!!errorMessageApi && "register__errorMessage_active"}`}>{errorMessageApi}</span>
-          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid}>Зарегистрироваться</button>
+          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid && isLoader}>
+            {isLoader ? "Регистрация" : "Зарегистрироваться"}
+          </button> 
         </form>
         <p className="register__question">Уже зарегистрированы? <Link to="/signin" className="link register__link">Войти</Link></p>
       </section>
@@ -73,4 +79,4 @@ const Register = ({onSubmit, errorMessageApi}) => {
   )
 }
 
-export default Register;
+export default withRouter(Register);

@@ -4,7 +4,7 @@ import Preloader from "../Preloader/Preloader";
 import { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
-const MoviesList = ({filterMovies, isLoader, movieErrorMessage, onCreateMovie, savedMovies, onDeleteMovie, filterSavedMovies = null }) => {
+const MoviesList = ({filterMovies, isLoader, movieErrorMessage, onCreateMovie, savedMovies, onDeleteMovie }) => {
   const [moviesDisplay, setMoviesDisplay] = useState([]);
   const [count, setCount] = useState(0);
   const [windowSize, setWindowsSite] = useState(window.screen.width)
