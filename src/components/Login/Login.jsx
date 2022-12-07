@@ -6,7 +6,7 @@ import { useValidation } from "../../hook/useValidation";
 import { useCallback, useContext, useEffect } from "react";
 import { LoginContext } from "../../context/LoginContext";
 
-const Login = ({history, onSubmit, errorMessageApi, isLoader}) => {
+const Login = ({history, onSubmit, errorMessageApi, isLoader, isButtonInactive}) => {
   const { values, handleChange, errors, isValid, resetForm } = useValidation();
   const loggedIn = useContext(LoginContext);
 
@@ -30,7 +30,9 @@ const Login = ({history, onSubmit, errorMessageApi, isLoader}) => {
   return (
     <main>
       <section className="login">
-        <img className="login__logo" src={logo} alt="Логотип"/>
+      <Link to="/" className="link login__linkLogo">
+        <img src={logo} className="login__logo" alt='логотип' />
+      </Link>
         <h2 className="login__hello">Рады видеть!</h2>
         <form className="login__form form" onSubmit={handleSubmit} noValidate>
           <Fieldset
@@ -56,7 +58,7 @@ const Login = ({history, onSubmit, errorMessageApi, isLoader}) => {
             isValid={isValid}
           />
           <span className={`login__errorMessage ${!!errorMessageApi && "login__errorMessage_active"}`}>{errorMessageApi}</span>
-          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid && isValid}>
+          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid && !isButtonInactive}>
             {isLoader ? "Выполняется вход..." : "Войти"}
           </button>
         </form>

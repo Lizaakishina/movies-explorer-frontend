@@ -1,3 +1,4 @@
+import { JWT } from "./constants";
 const BASE_URL = 'https://api.ak1s4.movies-explorer.nomoredomains.icu';
 
 const imageUrl = 'https://api.nomoreparties.co';
@@ -73,7 +74,7 @@ export const updateUser = async ({name, email}) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        'Authorization': `Bearer ${localStorage.getItem(JWT)}`
       },
       body: JSON.stringify({name, email})
     });
@@ -91,7 +92,7 @@ export const getSavedMovies = async () => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        'Authorization': `Bearer ${localStorage.getItem(JWT)}`
       }
     })
     const data = await checkAnswer(res);
@@ -108,7 +109,7 @@ export const createMovies = async (movie) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        'Authorization': `Bearer ${localStorage.getItem(JWT)}`
       },
       body: JSON.stringify({
         country: movie.country,
@@ -140,7 +141,7 @@ export const deleteMovie = async (movie) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        'Authorization': `Bearer ${localStorage.getItem(JWT)}`
       }
     })
 

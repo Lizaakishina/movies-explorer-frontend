@@ -1,6 +1,6 @@
 import "./Fieldset.css";
 
-const Fieldset = ({input, inputClass, placeholder, name, minLength, maxLength, onChange, errors, isValid}) => {
+const Fieldset = ({input, inputClass, placeholder, name, minLength, maxLength, onChange, errors, isValid, pattern}) => {
   
   return (
     <fieldset className="form__fieldset">
@@ -12,6 +12,7 @@ const Fieldset = ({input, inputClass, placeholder, name, minLength, maxLength, o
         onChange={onChange}
         minLength={minLength}
         maxLength={maxLength}
+        pattern={pattern}
         required
       />
       <span className={`form__input-error ${!isValid && 'form__input-error_active'}`}>{errors[name]}</span>

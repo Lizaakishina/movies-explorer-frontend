@@ -6,7 +6,7 @@ import { useValidation } from "../../hook/useValidation";
 import { LoginContext } from "../../context/LoginContext";
 import { useCallback, useContext, useEffect } from "react";
 
-const Register = ({history, onSubmit, errorMessageApi, isLoader}) => {
+const Register = ({history, onSubmit, errorMessageApi, isLoader, isButtonInactive}) => {
   const { values, handleChange, errors, isValid, resetForm } = useValidation();
   const loggedIn = useContext(LoginContext);
 
@@ -31,7 +31,9 @@ const Register = ({history, onSubmit, errorMessageApi, isLoader}) => {
   return (
     <main>
       <section className="register">
-        <img className="register__logo" src={logo} alt="Логотип"/>
+        <Link to="/" className="link register__linkLogo">
+          <img src={logo} className="register__logo" alt='логотип' />
+        </Link>
         <h2 className="register__hello">Добро пожаловать!</h2>
         <form className="form register__form" onSubmit={handleSubmit} noValidate>
           <Fieldset
@@ -69,7 +71,7 @@ const Register = ({history, onSubmit, errorMessageApi, isLoader}) => {
             isValid={isValid}
           />
           <span className={`register__errorMessage ${!!errorMessageApi && "register__errorMessage_active"}`}>{errorMessageApi}</span>
-          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid && isLoader}>
+          <button className={`button form__button ${!isValid && "form__button_inactive"}`} disabled={!isValid && !isButtonInactive}>
             {isLoader ? "Регистрация" : "Зарегистрироваться"}
           </button> 
         </form>

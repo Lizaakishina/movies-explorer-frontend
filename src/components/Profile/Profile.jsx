@@ -4,7 +4,7 @@ import { memo, useCallback, useContext, useEffect } from "react";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import { useValidation } from "../../hook/useValidation";
 
-const Profile = ({onSignOut, onUpdateUser, errorMessageApi, isLoader}) => {
+const Profile = ({onSignOut, onUpdateUser, errorMessageApi, isLoader, isButtonInactive}) => {
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange, errors, isValid, resetForm } = useValidation();
   const isButtonActive = (isValid && (currentUser.name !== values.name || currentUser.email !== values.email));
@@ -60,7 +60,7 @@ const Profile = ({onSignOut, onUpdateUser, errorMessageApi, isLoader}) => {
               </fieldset>
               <span className={`profile__errorMessage ${!!errorMessageApi && "profile__errorMessage_active"}`}>{errorMessageApi}</span>
               <button className={`button profile__edit ${isButtonActive && "profile__edit_active"}`} disabled={!isButtonActive}>
-                {isLoader ? "Сохранение..." : "Редактировать"}
+                {isButtonInactive ? "Сохранение..." : "Редактировать"}
               </button>
             </form>
           </div>

@@ -10,10 +10,10 @@ import ErrorPopup from '../ErrorPopup/ErrorPopup';
 import Preloader from '../Preloader/Preloader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 //реакт
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 //контексты и утилиты
-import { NOT_MOVIES_SEARCH_MESSAGE, MOVIES_SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import { NOT_MOVIES_SEARCH_MESSAGE, MOVIES_SERVER_ERROR_MESSAGE, JWT, MOVIES_NAME, CHECKBOX } from '../../utils/constants';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { LoginContext } from '../../context/LoginContext';
 import { createMovies, deleteMovie, getSavedMovies, getUser, login, register, updateUser } from '../../utils/mainApi';
@@ -35,20 +35,22 @@ const App = ({history}) => {
   const [movieErrorMessage, setMovieErrorMessage] = useState('');
   const [errorMessageApi, setErrorMessageApi] = useState('');
   const {handleSearch, handleCheckbox} = useFilterMovies();
+  const [isButtonInactive, setIsButtonInactive] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
+    const token = localStorage.getItem(JWT);
     if (token) {
       handleGetMovies();
       handleGetUser(token);
     } else {
+      handleSignOut();
       setIsLoaderPage(false);
     }
   }, [])
 
   useEffect(() => {
-    const moviesName = sessionStorage.getItem('moviesName');
-    const checkbox = sessionStorage.getItem('checkbox')
+    const moviesName = sessionStorage.getItem(MOVIES_NAME);
+    const checkbox = sessionStorage.getItem(CHECKBOX)
     if (moviesName) {
       setIsShort(checkbox === 'true' ? true : false);
       const list = handleSearch(moviesFromServer, moviesName);
@@ -60,7 +62,7 @@ const App = ({history}) => {
   useEffect(() => {
     if(loggedIn) {
       handleGetSavedMovies();
-      handleGetUser(localStorage.getItem('jwt'))
+      handleGetUser(localStorage.getItem(JWT))
     } else {
       setSavedMovies([]);
     }
@@ -69,6 +71,7 @@ const App = ({history}) => {
   const handleRegister = async ({name, email, password}) => {
     try {
       setIsLoader(true);
+      setIsButtonInactive(true);
       const res = await register({name, email, password});
       handleLogin({email, password});
     } catch (error) {
@@ -79,6 +82,7 @@ const App = ({history}) => {
       } else {
         setErrorMessageApi(error.message)
       }
+      setIsButtonInactive(false);
     } finally {
       setIsLoader(false);
       setTimeout(() => {
@@ -90,8 +94,9 @@ const App = ({history}) => {
   const handleLogin = async ({email, password}) => {
     try {
       setIsLoader(true);
+      setIsButtonInactive(true);
       const res = await login({email, password});
-      localStorage.setItem('jwt', res.token);
+      localStorage.setItem(JWT, res.token);
       const user = await getUser(res.token);
       setCurrentUser({_id: user._id, name: user.name, email: user.email});
       setLoggedIn(true);
@@ -100,7 +105,8 @@ const App = ({history}) => {
     } catch (error) {
       setLoggedIn(false);
       setErrorMessageApi(error.message);
-      console.log(error)
+      setIsButtonInactive(false);
+      console.log(error);
     } finally {
       setIsLoader(false);
       setTimeout(() => {
@@ -118,12 +124,10 @@ const App = ({history}) => {
         handleGetSavedMovies();
         setIsLoaderPage(false);
       } else {
-        localStorage.removeItem('jwt');
-        sessionStorage.removeItem('moviesName');
-        sessionStorage.removeItem('checkbox')
+        handleSignOut();
       }
     } catch (error) {
-      sessionStorage.removeItem('moviesName');
+      handleSignOut();
       setIsLoaderPage(false);
       console.log(error);
     } 
@@ -146,11 +150,14 @@ const App = ({history}) => {
   }
 
   const handleSignOut = () => {
-    localStorage.removeItem('jwt');
-    sessionStorage.removeItem('moviesName');
+    localStorage.removeItem(JWT);
+    sessionStorage.removeItem(MOVIES_NAME);
+    sessionStorage.removeItem(CHECKBOX);
     setLoggedIn(false);
     setFilterMovies([]);
     setSavedMovies([]);
+    setMoviesFromServer([]);
+    setIsButtonInactive(false);
     setCurrentUser({_id: '', name: '', email: ''});
   }
 
@@ -171,12 +178,12 @@ const App = ({history}) => {
 
   const handleSearchMovies = async (movieName, checked) => {
     setIsShort(checked);
-    await setIsLoader(true);
+    setIsLoader(true);
     handleGetMovies();
     const list = handleSearch(moviesFromServer, movieName);
     const shortList = handleCheckbox(list, checked);
     setFilterMovies(shortList);
-    await setIsLoader(false);
+    setIsLoader(false);
     (shortList.length === 0 && !isLoader) ? setMovieErrorMessage(NOT_MOVIES_SEARCH_MESSAGE) : setMovieErrorMessage('');
   }
 
@@ -212,8 +219,8 @@ const App = ({history}) => {
 
   const handleChangeChecked = (checked) => {
     if (filterMovies.length > 0) {
-    handleSearchMovies(sessionStorage.getItem('moviesName'), checked);
-    sessionStorage.setItem('checkbox', checked)
+    handleSearchMovies(sessionStorage.getItem(MOVIES_NAME), checked);
+    sessionStorage.setItem(CHECKBOX, checked)
     }
   }
 
@@ -254,10 +261,10 @@ const App = ({history}) => {
               isLoader={isLoader}
             />
             <Route path="/signup">
-              <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi} isLoader={isLoader}/>
+              <Register onSubmit={handleRegister} errorMessageApi={errorMessageApi} isLoader={isLoader} isButtonInactive={isButtonInactive}/>
             </Route>
             <Route path="/signin">
-              <Login onSubmit={handleLogin} errorMessageApi={errorMessageApi} isLoader={isLoader}/>
+              <Login onSubmit={handleLogin} errorMessageApi={errorMessageApi} isLoader={isLoader} isButtonInactive={isButtonInactive}/>
             </Route>
             <Route path="*">
               <PageNotFound />
