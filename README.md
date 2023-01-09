@@ -1,4 +1,5 @@
 # movies-explorer-frontend
+Ccылка на сайт: https://ak1s4.movies-explorer.nomoredomains.club
 Ссылка на макет: https://disk.yandex.ru/d/LbLRVwp16E35bA
 
 Фронтенд для дипломного проекта Movies Explorer на курсе *Веб-разработки Яндекс.Практикума.*
