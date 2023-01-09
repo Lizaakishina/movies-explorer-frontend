@@ -1,4 +1,6 @@
 # movies-explorer-frontend
+Ссылка на pull: https://github.com/Lizaakishina/movies-explorer-frontend/pull/3
+
 Ссылка на макет: https://disk.yandex.ru/d/LbLRVwp16E35bA
 
 Ссылка на сайт: https://ak1s4.movies-explorer.nomoredomains.club
