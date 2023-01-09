@@ -5,6 +5,14 @@
   align-items: center;
 }
 
+.moviesList__title {
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 29px;
+  text-align: center;
+  margin: 0;
+}
+
 .moviesList__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -39,6 +47,10 @@
 @media screen and (max-width: 480px) {
   .moviesList {
     padding: 40px 10px 80px;
+  }
+
+  .moviesList__title {
+    padding: 0 20px;
   }
 
   .moviesList__grid {

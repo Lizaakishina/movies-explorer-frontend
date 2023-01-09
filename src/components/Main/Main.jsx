@@ -5,11 +5,12 @@ import Techs from './Techs/Techs';
 import AboutMe from './AboutMe/AboutMe';
 import Portfolio from './Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
+import { memo } from 'react';
 
-const Main = () => {
+const Main = ({loggedIn}) => {
     return (
       <>
-        <Header logIn={false}/>
+        <Header loggedIn={loggedIn}/>
         <main>
           <Promo />
           <AboutProject />
@@ -22,4 +23,4 @@ const Main = () => {
     )
   }
   
-  export default Main;
+  export default memo(Main);

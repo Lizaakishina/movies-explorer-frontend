@@ -8,10 +8,14 @@
   box-sizing: border-box;
 }
 
-.login__logo {
+.login__linkLogo {
   width: 38px;
   height: 38px;
   align-self: flex-start;
+}
+
+.login__logo {
+  object-fit: cover;
 }
 
 .login__hello {
@@ -38,6 +42,24 @@
 .login__form {
   width: 100%;
   margin: 40px 0 0 0;
+  position: relative;
+}
+
+.login__errorMessage {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+  width: 100%;
+  position: absolute;
+  bottom: 65px;
+  left: 0;
+  opacity: 0;
+  text-align: center;
+}
+
+.login__errorMessage_active {
+  opacity: 1;
 }
 
 .form__button {

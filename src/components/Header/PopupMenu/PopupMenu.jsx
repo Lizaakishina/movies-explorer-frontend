@@ -3,14 +3,14 @@ import { NavLink } from "react-router-dom";
 import line from "../../../images/line.svg";
 import chel from "../../../images/chel.svg";
 import closeButton from "../../../images/close-button.svg";
-import useOpenPopup from "../../../hook/useOpenPopup";
+import useOpenMenu from "../../../hook/useOpenMenu";
 import "./PopupMenu.css";
 
-const PopupMenu = ({logIn}) => {
-  const {handlePopupClick, isButtonPopup} = useOpenPopup(false);
+const PopupMenu = ({loggedIn}) => {
+  const {handlePopupClick, isButtonPopup} = useOpenMenu(false);
   return (
     <section className="popupMenu">
-      <button type="button" className={`button popupMenu__button ${logIn && "popupMenu__button_type_logIn"}`} onClick={handlePopupClick}>
+      <button type="button" className={`button popupMenu__button ${loggedIn && "popupMenu__button_type_logIn"}`} onClick={handlePopupClick}>
         <img className="popupMenu__line" src={line} alt="Линия"/>
         <img className="popupMenu__line" src={line} alt="Линия"/>
         <img className="popupMenu__line" src={line} alt="Линия"/>

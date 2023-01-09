@@ -1,18 +1,56 @@
 import "./SearchForm.css";
 import FilterCheckbox from "./FilterCheckbox/FilterCheckbox";
+import { useSearchMovies } from "../../../hook/useSearchMovies";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { CHECKBOX } from "../../../utils/constants";
 
-const SearchForm = () => {
+const SearchForm = ({type, onSearch, onError, isShort, onResetForm, onChange, isLoader}) => {
+  const [checked, setChecked] = useState(false);
+  const {handleChange, handleSetItem, nameMovie} = useSearchMovies(type)
+  const url = useLocation();
+
+  function handleSearchMovie (e) {
+    e.preventDefault();
+    if (url.pathname === '/movies') {
+      handleSetItem(); 
+      sessionStorage.setItem(CHECKBOX, checked)
+    };
+
+    if (!!nameMovie) {
+      onSearch(nameMovie, checked);
+    } else {
+      url.pathname === '/movies'
+      ? onError("Нужно ввести ключевык слова", true)
+      : onResetForm(checked);
+    }
+  }
+
+  const handleChangeChecked = (checked) => {
+    setChecked(checked);
+    onChange(checked)
+  }
+
   return (
     <div className="searchForm">
-      <form className="searchForm__form" name="searchForm">
+      <form className="searchForm__form" name="searchForm" onSubmit={handleSearchMovie} noValidate>
         <fieldset className="searchForm__fieldset">
-          <label htmlfor="search" className="searchForm__label">
-            <input type="text" className="searchForm__input" placeholder="Фильм" id="search" required/>
+          <label htmlFor="search" className="searchForm__label">
+          <input 
+              type="text"
+              className="searchForm__input"
+              placeholder="Фильм"
+              id="search"
+              name="movie"
+              onChange={handleChange}
+              value={nameMovie}
+              required
+            />
           </label>
         </fieldset>
-        <button className="button button_type_search">Поиск</button>
+        <button className="button button_type_search" disabled={isLoader}>Поиск</button>
       </form>
-      <FilterCheckbox />
+      <FilterCheckbox onChangeChecked={handleChangeChecked} isShort={isShort}/>
       <div className="searchForm__line"></div>
     </div>
   )

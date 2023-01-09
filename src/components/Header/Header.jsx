@@ -3,11 +3,15 @@ import {Link, NavLink} from "react-router-dom";
 import logo from "../../images/logo.svg";
 import chel from "../../images/chel.svg";
 import PopupMenu from "./PopupMenu/PopupMenu";
+import { memo, useContext } from "react";
+import { LoginContext } from "../../context/LoginContext";
 
-const Header = ({logIn}) => {
+const Header = () => {
+  const loggedIn = useContext(LoginContext);
+
   return (
     <header className="header">
-      {logIn? <>
+      {loggedIn? <>
           <div className="header__nav header__nav_type_movies">
             <Link to="/" className="link header__link_type_logo>">
               <img src={logo} className="header__logo" alt='лого'/>
@@ -39,4 +43,4 @@ const Header = ({logIn}) => {
   )
 }
 
-export default Header;
+export default memo(Header);
